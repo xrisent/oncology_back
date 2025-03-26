@@ -1,10 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Member } from './member/entities/member.entity';
+import { Partner } from './partner/entities/partner.entity';
+import { Employee } from './employee/entities/employee.entity';
+import { Receipt } from './receipt/entities/receipt.entity';
+import { Thesis } from './thesis/entities/thesis.entity';
 import { MemberModule } from './member/member.module';
 import { PartnerModule } from './partner/partner.module';
 import { EmployeeModule } from './employee/employee.module';
-import { ReceiptModule } from './receipt/receipt.module';
 import { ThesisModule } from './thesis/thesis.module';
+import { ReceiptModule } from './receipt/receipt.module';
 
 @Module({
   imports: [
@@ -18,11 +23,12 @@ import { ThesisModule } from './thesis/thesis.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([Member, Partner, Employee, Receipt, Thesis]),
     MemberModule,
     PartnerModule,
     EmployeeModule,
-    ReceiptModule,
     ThesisModule,
+    ReceiptModule
   ],
 })
 export class AppModule {}

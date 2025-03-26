@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Member } from './entities/member.entity';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 
 @Injectable()
 export class MemberService {
-  create(createMemberDto: CreateMemberDto) {
-    return 'This action adds a new member';
+  constructor(
+    @InjectRepository(Member)
+    private memberRepository: Repository<Member>, // Репозиторий для работы с сущностью Member
+  ) {}
+
+  async create(createMemberDto: CreateMemberDto) {
+    const newMember = this.memberRepository.create(createMemberDto); // Создание нового объекта
+    return await this.memberRepository.save(newMember); // Сохранение в базе данных
   }
 
-  findAll() {
-    return `This action returns all member`;
+  async findAll() {
+    return await this.memberRepository.find(); // Получение всех членов
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} member`;
+  async findOne(id: number) {
+    return await this.memberRepository.findOne({
+      where: { id }, // Обновленный способ передачи ID в findOne
+    });
   }
 
-  update(id: number, updateMemberDto: UpdateMemberDto) {
-    return `This action updates a #${id} member`;
+  async update(id: number, updateMemberDto: UpdateMemberDto) {
+    await this.memberRepository.update(id, updateMemberDto); // Обновление члена по ID
+    return this.findOne(id); // Возвращаем обновленного члена
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} member`;
+  async remove(id: number) {
+    await this.memberRepository.delete(id); // Удаление члена по ID
+    return { deleted: true }; // Ответ, что удаление прошло успешно
   }
 }
