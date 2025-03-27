@@ -5,7 +5,7 @@ services:
     build: .
     container_name: nestjs-app
     ports:
-      - "3000:3000"
+      - "3002:3002"
     depends_on:
       - postgres
     environment:

@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Открываем порт
-EXPOSE 3000
+EXPOSE 3002
 
 # Запуск приложения
 CMD ["node", "dist/main"]

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Partner } from './entities/partner.entity'; // Импортируем сущность Partner
+import { Partner } from './entities/partner.entity';
 import { CreatePartnerDto } from './dto/create-partner.dto';
 import { UpdatePartnerDto } from './dto/update-partner.dto';
 
@@ -9,31 +9,28 @@ import { UpdatePartnerDto } from './dto/update-partner.dto';
 export class PartnerService {
   constructor(
     @InjectRepository(Partner)
-    private partnerRepository: Repository<Partner>, // Репозиторий для работы с сущностью Partner
+    private readonly partnerRepository: Repository<Partner>,
   ) {}
 
   async create(createPartnerDto: CreatePartnerDto) {
-    const newPartner = this.partnerRepository.create(createPartnerDto); // Создаем нового партнера
-    return await this.partnerRepository.save(newPartner); // Сохраняем в базе данных
+    const partner = this.partnerRepository.create(createPartnerDto);
+    return await this.partnerRepository.save(partner);
   }
 
   async findAll() {
-    return await this.partnerRepository.find(); // Получаем всех партнеров
+    return await this.partnerRepository.find();
   }
 
   async findOne(id: number) {
-    return await this.partnerRepository.findOne({
-      where: { id }, // Используем параметр where для поиска по ID
-    });
+    return await this.partnerRepository.findOne({ where: { id } });
   }
 
   async update(id: number, updatePartnerDto: UpdatePartnerDto) {
-    await this.partnerRepository.update(id, updatePartnerDto); // Обновляем партнера по ID
-    return this.findOne(id); // Возвращаем обновленного партнера
+    await this.partnerRepository.update(id, updatePartnerDto);
+    return this.findOne(id);
   }
 
   async remove(id: number) {
-    await this.partnerRepository.delete(id); // Удаляем партнера по ID
-    return { deleted: true }; // Ответ, что удаление прошло успешно
+    await this.partnerRepository.delete(id);
   }
 }

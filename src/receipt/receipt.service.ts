@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Receipt } from './entities/receipt.entity'; // Импортируем сущность Receipt
+import { Receipt } from './entities/receipt.entity';
 import { CreateReceiptDto } from './dto/create-receipt.dto';
 import { UpdateReceiptDto } from './dto/update-receipt.dto';
 
@@ -9,31 +9,28 @@ import { UpdateReceiptDto } from './dto/update-receipt.dto';
 export class ReceiptService {
   constructor(
     @InjectRepository(Receipt)
-    private receiptRepository: Repository<Receipt>, // Репозиторий для работы с сущностью Receipt
+    private readonly receiptRepository: Repository<Receipt>,
   ) {}
 
-  async create(createReceiptDto: CreateReceiptDto) {
-    const newReceipt = this.receiptRepository.create(createReceiptDto); // Создаем новый чек
-    return await this.receiptRepository.save(newReceipt); // Сохраняем в базе данных
+  async create(filePath: string, createReceiptDto: CreateReceiptDto) {
+    const receipt = this.receiptRepository.create({ ...createReceiptDto, file: filePath });
+    return await this.receiptRepository.save(receipt);
   }
 
   async findAll() {
-    return await this.receiptRepository.find(); // Получаем все чеки
+    return await this.receiptRepository.find();
   }
 
   async findOne(id: number) {
-    return await this.receiptRepository.findOne({
-      where: { id }, // Используем параметр where для поиска по ID
-    });
+    return await this.receiptRepository.findOne({ where: { id } });
   }
 
   async update(id: number, updateReceiptDto: UpdateReceiptDto) {
-    await this.receiptRepository.update(id, updateReceiptDto); // Обновляем чек по ID
-    return this.findOne(id); // Возвращаем обновленный чек
+    await this.receiptRepository.update(id, updateReceiptDto);
+    return this.findOne(id);
   }
 
   async remove(id: number) {
-    await this.receiptRepository.delete(id); // Удаляем чек по ID
-    return { deleted: true }; // Ответ, что удаление прошло успешно
+    await this.receiptRepository.delete(id);
   }
 }

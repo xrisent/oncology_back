@@ -10,6 +10,9 @@ import { PartnerModule } from './partner/partner.module';
 import { EmployeeModule } from './employee/employee.module';
 import { ThesisModule } from './thesis/thesis.module';
 import { ReceiptModule } from './receipt/receipt.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -28,7 +31,12 @@ import { ReceiptModule } from './receipt/receipt.module';
     PartnerModule,
     EmployeeModule,
     ThesisModule,
-    ReceiptModule
+    ReceiptModule,
+    MulterModule.register({ dest: './uploads' }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/uploads',
+    }),
   ],
 })
 export class AppModule {}
