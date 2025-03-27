@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Patch, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param, Delete, UseGuards } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { CreateMemberDto } from './dto/create-member.dto';
 import { UpdateMemberDto } from './dto/update-member.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @ApiTags('members')
 @Controller('members')
@@ -10,6 +11,7 @@ export class MemberController {
   constructor(private readonly memberService: MemberService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Create a new member' })
   @ApiResponse({ status: 201, description: 'The member has been successfully created.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
@@ -18,6 +20,7 @@ export class MemberController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get all members' })
   @ApiResponse({ status: 200, description: 'List of all members.' })
   findAll() {
@@ -25,6 +28,7 @@ export class MemberController {
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Get a member by ID' })
   @ApiResponse({ status: 200, description: 'The member found.' })
   @ApiResponse({ status: 404, description: 'Member not found.' })
@@ -33,6 +37,7 @@ export class MemberController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Partially update a member by ID' })
   @ApiResponse({ status: 200, description: 'The member has been successfully updated.' })
   @ApiResponse({ status: 404, description: 'Member not found.' })
@@ -41,6 +46,7 @@ export class MemberController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Remove a member by ID' })
   @ApiResponse({ status: 200, description: 'The member has been successfully removed.' })
   remove(@Param('id') id: string) {

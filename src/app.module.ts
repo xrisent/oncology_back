@@ -13,6 +13,9 @@ import { ReceiptModule } from './receipt/receipt.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -23,6 +26,7 @@ import { join } from 'path';
       username: process.env.DB_USER || 'postgres',
       password: process.env.DB_PASS || 'postgres',
       database: process.env.DB_NAME || 'nest_db',
+      entities: [User],
       autoLoadEntities: true,
       synchronize: true,
     }),
@@ -37,6 +41,9 @@ import { join } from 'path';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
     }),
+    AuthModule,
+    AuthModule,
+    UsersModule,
   ],
 })
 export class AppModule {}

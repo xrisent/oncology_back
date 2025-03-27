@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('Oncology API') // Заголовок документации
     .setDescription('The oncology API description') // Описание API
     .setVersion('1.0') // Версия API
+    .addBearerAuth()
     .build(); // Строим конфигурацию документации
 
   const document = SwaggerModule.createDocument(app, config); // Создание документации
