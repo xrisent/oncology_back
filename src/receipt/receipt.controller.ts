@@ -7,6 +7,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { File } from 'multer';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('receipt')
 export class ReceiptController {
@@ -14,6 +15,7 @@ export class ReceiptController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -32,24 +34,28 @@ export class ReceiptController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   findAll() {
     return this.receiptService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   findOne(@Param('id') id: string) {
     return this.receiptService.findOne(+id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   async update(@Param('id') id: string, @Body() updateReceiptDto: UpdateReceiptDto) {
     return this.receiptService.update(+id, updateReceiptDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   remove(@Param('id') id: string) {
     return this.receiptService.remove(+id);
   }

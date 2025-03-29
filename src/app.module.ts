@@ -42,7 +42,6 @@ import { User } from './users/entities/user.entity';
       serveRoot: '/uploads',
     }),
     AuthModule,
-    AuthModule,
     UsersModule,
   ],
 })

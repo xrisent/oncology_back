@@ -7,6 +7,7 @@ import { CreateThesisDto } from './dto/create-thesis.dto';
 import { UpdateThesisDto } from './dto/update-thesis.dto';
 import { File } from 'multer';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('thesis')
 export class ThesisController {
@@ -14,6 +15,7 @@ export class ThesisController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
@@ -32,24 +34,28 @@ export class ThesisController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   findAll() {
     return this.thesisService.findAll();
   }
 
   @Get(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   findOne(@Param('id') id: string) {
     return this.thesisService.findOne(+id);
   }
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   async update(@Param('id') id: string, @Body() updateThesisDto: UpdateThesisDto) {
     return this.thesisService.update(+id, updateThesisDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('access-token')
   remove(@Param('id') id: string) {
     return this.thesisService.remove(+id);
   }
