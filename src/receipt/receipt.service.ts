@@ -23,8 +23,6 @@ export class ReceiptService {
     const { memberId, partnerId } = createReceiptDto;
     
     const receipt = this.receiptRepository.create({ file: filePath });
-
-    console.log(receipt, memberId)
     
     if (memberId) {
       const member = await this.memberRepository.findOne({
@@ -39,18 +37,21 @@ export class ReceiptService {
       });
       receipt.partner = partner || undefined;
     }
-
-    console.log(receipt)
   
     return await this.receiptRepository.save(receipt);
   }
 
   async findAll() {
-    return await this.receiptRepository.find();
+    return await this.receiptRepository.find({
+      relations: ['member', 'partner'],  
+    });
   }
 
   async findOne(id: number) {
-    return await this.receiptRepository.findOne({ where: { id } });
+    return await this.receiptRepository.findOne({
+      where: { id },
+      relations: ['member', 'partner'],
+    });
   }
 
   async update(id: number, updateReceiptDto: UpdateReceiptDto) {
