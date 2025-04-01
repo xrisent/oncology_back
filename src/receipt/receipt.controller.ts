@@ -5,7 +5,6 @@ import { UpdateReceiptDto } from './dto/update-receipt.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { File } from 'multer';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
@@ -27,7 +26,7 @@ export class ReceiptController {
       }),
     }),
   )
-  create(@UploadedFile() file: File, @Body() createReceiptDto: CreateReceiptDto){
+  create(@UploadedFile() file: Express.Multer.File, @Body() createReceiptDto: CreateReceiptDto){
     const filePath = `/uploads/receipts/${file.filename}`;
     return this.receiptService.create(filePath, createReceiptDto);
   }

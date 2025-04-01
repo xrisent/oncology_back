@@ -5,6 +5,7 @@ import { Partner } from './partner/entities/partner.entity';
 import { Employee } from './employee/entities/employee.entity';
 import { Receipt } from './receipt/entities/receipt.entity';
 import { Thesis } from './thesis/entities/thesis.entity';
+import { Document } from './documents/entities/document.entity';
 import { MemberModule } from './member/member.module';
 import { PartnerModule } from './partner/partner.module';
 import { EmployeeModule } from './employee/employee.module';
@@ -16,6 +17,7 @@ import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { User } from './users/entities/user.entity';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
@@ -30,7 +32,7 @@ import { User } from './users/entities/user.entity';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([Member, Partner, Employee, Receipt, Thesis]),
+    TypeOrmModule.forFeature([Member, Partner, Employee, Receipt, Thesis, Document]),
     MemberModule,
     PartnerModule,
     EmployeeModule,
@@ -43,6 +45,7 @@ import { User } from './users/entities/user.entity';
     }),
     AuthModule,
     UsersModule,
+    DocumentsModule,
   ],
 })
 export class AppModule {}

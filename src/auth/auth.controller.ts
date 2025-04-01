@@ -43,7 +43,8 @@ export class AuthController {
     },
   })
   async login(@Body() loginDto: any) {
-    return this.authService.login(loginDto);
+    const user = await this.authService.validateUser(loginDto.username, loginDto.password);
+    return this.authService.login(user);
   }
 
   @Post('profile')

@@ -5,7 +5,6 @@ import { extname } from 'path';
 import { ThesisService } from './thesis.service';
 import { CreateThesisDto } from './dto/create-thesis.dto';
 import { UpdateThesisDto } from './dto/update-thesis.dto';
-import { File } from 'multer';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { ApiBearerAuth } from '@nestjs/swagger';
 
@@ -27,7 +26,7 @@ export class ThesisController {
       }),
     }),
   )
-  create(@UploadedFile() file: File, @Body() CreateThesisDto: CreateThesisDto){
+  create(@UploadedFile() file: Express.Multer.File, @Body() CreateThesisDto: CreateThesisDto){
     const newThesis = { ...CreateThesisDto, file: `/uploads/theses/${file.filename}` };
     return this.thesisService.create(newThesis);
   }
